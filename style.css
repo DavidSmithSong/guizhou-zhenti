@@ -606,6 +606,16 @@ body::before {
   margin: 0 0 1rem 1.5rem;
   text-align: center;
 }
+.portrait-source {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: normal;
+  font-size: 0.6rem;
+  letter-spacing: .04em;
+  color: var(--muted);
+  opacity: 0.5;
+  margin-top: 0.15rem;
+}
 
 /* ─── SCROLLBAR ─── */
 ::-webkit-scrollbar { width: 4px; }
