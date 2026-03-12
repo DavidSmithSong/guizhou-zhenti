@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="author" content="桂舟文学考研辅导">
+<meta name="copyright" content="© 2025 桂舟文学考研辅导. 版权所有，未经授权禁止转载。">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人大文学考研 · 真题地图</title>
+<link rel="preconnect" href="https://fonts.loli.net">
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0c0f1a;
+  --surface:  #111624;
+  --surface2: #171d2e;
+  --gold:     #f0f0f0;
+  --gold-dim: #4a6fa0;
+  --text:     #e8eaf0;
+  --muted:    #6a7a9a;
+  --line:     rgba(200,220,255,0.12);
+  --c1: #6b9fd4;
+  --c2: #4a80c0;
+  --c3: #e05252;
+  --c4: #7ab0e0;
+  --c5: #d94040;
+  --c6: #2a65b8;
+  --c7: #eeeef4;
+  --c8: #c03030;
+  --xi:  #6b9fd4;
+  --gu:  #c8a96e;
+  --xd:  #5ba87a;
+  --ll:  #9b7fd4;
+  --zt:  #c03030;
+  --kg:  #7ab0e0;
+}
+[data-theme="light"] {
+  --bg:       #f4f1ea;
+  --surface:  #ede9df;
+  --surface2: #e5e0d4;
+  --gold:     #1a1814;
+  --gold-dim: #2a5090;
+  --text:     #1e1c18;
+  --muted:    #6a6050;
+  --line:     rgba(0,0,0,0.1);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 300;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Grain overlay */
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:9999; opacity:.5;
+}
+
+/* French flag top bar */
+.tricolor {
+  height: 4px;
+  flex-shrink: 0;
+  background: linear-gradient(to right,
+    #002395 0%, #002395 33.3%,
+    #ffffff 33.3%, #ffffff 66.6%,
+    #ED2939 66.6%, #ED2939 100%
+  );
+}
+
+/* Theme toggle */
+#theme-toggle {
+  position: fixed;
+  top: 1.2rem;
+  right: 1.4rem;
+  z-index: 10000;
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .85rem;
+  letter-spacing: .12em;
+  padding: .4rem .9rem;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background .25s, color .25s, border-color .25s;
+}
+#theme-toggle:hover { opacity: .8; }
+
+/* ─── LAYOUT ─── */
+.hub {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0 2rem;
+}
+
+/* Header ~25% */
+.header {
+  height: 25vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+.header::after {
+  content:'';
+  position:absolute; bottom:-1px; left:50%; transform:translateX(-50%);
+  width:1px; height:28px;
+  background: linear-gradient(to bottom, var(--gold-dim), transparent);
+}
+.label {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: .8rem;
+  letter-spacing: .2em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: .5rem;
+}
+.title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: .08em;
+  margin-bottom: .4rem;
+}
+.subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(.85rem, 1.8vw, 1.05rem);
+  color: var(--muted);
+  letter-spacing: .1em;
+  margin-bottom: .6rem;
+}
+.stats {
+  display: flex;
+  gap: 1.5rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .8rem;
+  letter-spacing: .12em;
+  color: var(--muted);
+}
+.stats span { opacity: .7; }
+.stats span::before { content: '·'; margin-right: .5rem; opacity: .5; }
+.stats span:first-child::before { display: none; }
+
+/* Cards ~55% */
+.cards-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 1vh 0;
+  min-height: 0;
+}
+.grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: .8rem;
+  height: 100%;
+}
+
+.card {
+  display: flex;
+  align-items: stretch;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--text);
+  transition: transform .2s, border-color .2s, box-shadow .2s;
+  min-height: 0;
+}
+.card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(200,220,255,0.3);
+  box-shadow: 0 8px 32px rgba(0,0,0,.3);
+}
+.card-stripe {
+  width: 4px;
+  flex-shrink: 0;
+}
+.card-body {
+  padding: .8rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: .2rem;
+  min-width: 0;
+}
+.card-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: .75rem;
+  letter-spacing: .15em;
+  opacity: .5;
+}
+.card-name {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(.9rem, 1.6vw, 1.1rem);
+  font-weight: 600;
+  letter-spacing: .05em;
+  line-height: 1.3;
+}
+.card-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(.72rem, 1.2vw, .85rem);
+  color: var(--muted);
+  letter-spacing: .06em;
+  line-height: 1.4;
+}
+
+/* Footer ~20% */
+.footer {
+  height: 20vh;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: .6rem;
+  flex-shrink: 0;
+}
+.footer-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: .72rem;
+  letter-spacing: .18em;
+  color: var(--muted);
+  text-transform: uppercase;
+  opacity: .6;
+}
+.quick-links {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+.quick-links a {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .78rem;
+  letter-spacing: .08em;
+  color: var(--muted);
+  text-decoration: none;
+  padding: .2rem .6rem;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  transition: all .2s;
+}
+.quick-links a:hover {
+  color: var(--gold);
+  border-color: rgba(200,220,255,0.3);
+}
+.copyright {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: .68rem;
+  color: var(--muted);
+  opacity: .4;
+  letter-spacing: .08em;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 640px) {
+  html, body { overflow: auto; }
+  body { overflow-x: hidden; }
+  .hub { padding: 0 1rem; }
+  .header { height: auto; padding: 1.5rem 0; }
+  .cards-area { height: auto; padding: 1rem 0; }
+  .grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    height: auto;
+    gap: .6rem;
+  }
+  .card { min-height: 70px; }
+  .footer { height: auto; padding: 1rem 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="tricolor"></div>
+<button id="theme-toggle" onclick="toggleTheme()">☀ Light</button>
+
+<div class="hub">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="label">Renmin University · Graduate Entrance</div>
+    <h1 class="title">人大文学考研 · 真题地图</h1>
+    <p class="subtitle">以文学史为经，真题为纬</p>
+    <div class="stats">
+      <span>12 分期</span>
+      <span>80+ 真题</span>
+      <span>60+ 名词解释</span>
+    </div>
+  </div>
+
+  <!-- CARDS -->
+  <div class="cards-area">
+    <div class="grid">
+
+      <a class="card" href="liang-xi-chuantong.html">
+        <div class="card-stripe" style="background:var(--xi)"></div>
+        <div class="card-body">
+          <div class="card-num">I</div>
+          <div class="card-name">西方文学</div>
+          <div class="card-desc">25讲 · 古希腊至后现代</div>
+        </div>
+      </a>
+
+      <a class="card" href="gudai-wenxue.html">
+        <div class="card-stripe" style="background:var(--gu)"></div>
+        <div class="card-body">
+          <div class="card-num">II</div>
+          <div class="card-name">中国古代文学</div>
+          <div class="card-desc">5讲 · 先秦至清代</div>
+        </div>
+      </a>
+
+      <a class="card" href="xiandai-wenxue.html">
+        <div class="card-stripe" style="background:var(--xd)"></div>
+        <div class="card-body">
+          <div class="card-num">III</div>
+          <div class="card-name">中国现当代文学</div>
+          <div class="card-desc">3讲 · 五四至当代</div>
+        </div>
+      </a>
+
+      <a class="card" href="wenxue-lilun.html">
+        <div class="card-stripe" style="background:var(--ll)"></div>
+        <div class="card-body">
+          <div class="card-num">IV</div>
+          <div class="card-name">文学理论 626</div>
+          <div class="card-desc">626核心考点 · 摹仿说至后殖民</div>
+        </div>
+      </a>
+
+      <a class="card" href="zhenti.html">
+        <div class="card-stripe" style="background:var(--zt)"></div>
+        <div class="card-body">
+          <div class="card-num">V</div>
+          <div class="card-name">历年真题</div>
+          <div class="card-desc">西方+中文 · 人大626/专业二</div>
+        </div>
+      </a>
+
+      <a class="card" href="graph.html">
+        <div class="card-stripe" style="background:var(--kg)"></div>
+        <div class="card-body">
+          <div class="card-num">VI</div>
+          <div class="card-name">知识图谱</div>
+          <div class="card-desc">文学史知识网络 · 交互可视化</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-label">Quick Access · 最近更新</div>
+    <div class="quick-links">
+      <a href="liang-xi-chuantong.html">古典希腊</a>
+      <a href="liang-xi-chuantong.html#renaissance">文艺复兴</a>
+      <a href="liang-xi-chuantong.html#romanticism">浪漫主义</a>
+      <a href="liang-xi-chuantong.html#realism">现实主义</a>
+      <a href="liang-xi-chuantong.html#modernism">现代主义</a>
+      <a href="zhenti.html">626真题汇总</a>
+    </div>
+    <div class="copyright">人大文学考研备考资料 · 2025–2026 · 以文学史为经，真题为纬</div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const saved = localStorage.getItem('theme');
+  if(saved === 'light') {
+    document.documentElement.setAttribute('data-theme','light');
+    document.getElementById('theme-toggle').textContent = '☾ Dark';
+  }
+})();
+function toggleTheme(){
+  const btn = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+  if(html.getAttribute('data-theme') === 'light'){
+    html.removeAttribute('data-theme');
+    localStorage.setItem('theme','dark');
+    btn.textContent = '☀ Light';
+  } else {
+    html.setAttribute('data-theme','light');
+    localStorage.setItem('theme','light');
+    btn.textContent = '☾ Dark';
+  }
+}
+</script>
+</body>
+</html>

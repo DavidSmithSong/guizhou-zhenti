@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="zh" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="author" content="桂舟文学考研辅导">
+<meta name="copyright" content="© 2025 桂舟文学考研辅导. 版权所有，未经授权禁止转载。">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文学史知识图谱 · 真题地图</title>
+<link rel="preconnect" href="https://fonts.loli.net">
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+/* ─── CSS VARIABLES ─── */
+:root {
+  --bg:       #0c0f1a;
+  --surface:  #111624;
+  --surface2: #171d2e;
+  --gold:     #f0f0f0;
+  --gold-dim: #4a6fa0;
+  --text:     #e8eaf0;
+  --muted:    #6a7a9a;
+  --line:     rgba(200,220,255,0.12);
+  --panel-w:  260px;
+}
+
+[data-theme="light"] {
+  --bg:       #f4f1ea;
+  --surface:  #ede9df;
+  --surface2: #e5e0d4;
+  --gold:     #1a1814;
+  --gold-dim: #2a5090;
+  --text:     #1e1c18;
+  --muted:    #6a6050;
+  --line:     rgba(0,0,0,0.1);
+}
+
+/* ─── RESET ─── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:100%; height:100%; overflow:hidden; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 300;
+  line-height: 1.8;
+}
+
+/* ─── GRAIN OVERLAY ─── */
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:9999; opacity:.5;
+}
+
+/* ─── FRENCH TRICOLOR TOP STRIPE ─── */
+.page-top-stripe {
+  position:fixed; top:0; left:0; right:0;
+  height:4px; z-index:10001;
+  background: linear-gradient(to right,
+    #002395 0%, #002395 33.3%,
+    #ffffff 33.3%, #ffffff 66.6%,
+    #ED2939 66.6%, #ED2939 100%
+  );
+}
+
+/* ─── THEME TOGGLE ─── */
+#theme-toggle {
+  position: fixed;
+  top: 1.2rem;
+  right: 1.4rem;
+  z-index: 10000;
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .85rem;
+  letter-spacing: .12em;
+  padding: .4rem .9rem;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background .25s, color .25s, border-color .25s;
+}
+#theme-toggle:hover { opacity:.8; }
+
+/* ─── SIDEBAR PANEL ─── */
+#panel {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--panel-w);
+  background: var(--surface);
+  border-right: 1px solid var(--line);
+  z-index: 9000;
+  overflow-y: auto;
+  padding-top: 4px;
+  transition: transform .3s ease, background .25s, border-color .25s;
+  display: flex;
+  flex-direction: column;
+}
+
+#panel-inner {
+  padding: 1.6rem 1.2rem 2rem;
+  flex: 1;
+}
+
+.panel-logo {
+  display: block;
+  text-decoration: none;
+  margin-bottom: 1.6rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.panel-logo-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: .7rem;
+  color: var(--muted);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: .25rem;
+}
+
+.panel-logo-zh {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: .05em;
+}
+
+.panel-section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: .68rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 1.4rem 0 .7rem;
+  padding-bottom: .3rem;
+  border-bottom: 1px solid var(--line);
+}
+
+/* ─── FILTER CHECKBOXES ─── */
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  margin-bottom: .5rem;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  cursor: pointer;
+  padding: .3rem .35rem;
+  border-radius: 2px;
+  transition: background .15s;
+  user-select: none;
+}
+
+.filter-item:hover { background: var(--surface2); }
+
+.filter-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1.5px solid currentColor;
+  transition: background .2s;
+}
+
+.filter-item.active .filter-dot {
+  background: currentColor;
+}
+
+.filter-label {
+  font-size: .78rem;
+  color: var(--text);
+  letter-spacing: .04em;
+}
+
+.filter-count {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .72rem;
+  color: var(--muted);
+  margin-left: auto;
+}
+
+/* ─── LEGEND ─── */
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: .4rem;
+}
+
+.legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-dot.author {
+  width: 7px; height: 7px;
+  background: #4a5a7a;
+  border: 1.5px solid #6a7a9a;
+}
+
+.legend-line {
+  width: 22px; height: 2px;
+  flex-shrink: 0;
+  border-radius: 1px;
+}
+
+.legend-label {
+  font-size: .74rem;
+  color: var(--muted);
+}
+
+/* ─── PANEL BUTTONS ─── */
+.panel-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: .82rem;
+  letter-spacing: .1em;
+  padding: .55rem .8rem;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--surface2);
+  color: var(--muted);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all .2s;
+  margin-bottom: .5rem;
+}
+
+.panel-btn:hover {
+  color: var(--gold);
+  border-color: var(--gold-dim);
+  background: var(--surface);
+}
+
+/* ─── MOBILE TOGGLE ─── */
+#panel-toggle {
+  display: none;
+  position: fixed;
+  top: 1.2rem;
+  left: 1rem;
+  z-index: 10001;
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-size: .9rem;
+  width: 2.2rem; height: 2.2rem;
+  cursor: pointer;
+  border-radius: 2px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── GRAPH CANVAS AREA ─── */
+#graph-wrap {
+  position: fixed;
+  top: 4px;
+  left: var(--panel-w);
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  background: var(--bg);
+  transition: left .3s ease, background .25s;
+}
+
+#graph-svg {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  display: block;
+}
+
+#graph-svg:active { cursor: grabbing; }
+
+/* ─── TOOLTIP ─── */
+#tooltip {
+  position: fixed;
+  z-index: 9500;
+  pointer-events: none;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: .6rem .9rem;
+  font-size: .8rem;
+  max-width: 180px;
+  opacity: 0;
+  transition: opacity .15s;
+  box-shadow: 0 4px 20px rgba(0,0,0,.3);
+}
+
+#tooltip.show { opacity: 1; }
+
+.tooltip-name {
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: .2rem;
+  font-size: .85rem;
+}
+
+.tooltip-era {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: .73rem;
+  color: var(--muted);
+  letter-spacing: .08em;
+}
+
+.tooltip-hint {
+  font-size: .7rem;
+  color: var(--muted);
+  margin-top: .3rem;
+  opacity: .7;
+}
+
+/* ─── PAGE TITLE BADGE ─── */
+#graph-title {
+  position: fixed;
+  top: 1.1rem;
+  left: calc(var(--panel-w) + 1.4rem);
+  z-index: 9000;
+  pointer-events: none;
+  transition: left .3s ease;
+}
+
+.graph-title-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: .68rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+}
+
+.graph-title-zh {
+  font-size: .92rem;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: .06em;
+}
+
+/* ─── BOTTOM NAV ─── */
+#bottom-nav {
+  position: fixed;
+  bottom: 1.4rem;
+  left: calc(var(--panel-w) + 50%);
+  transform: translateX(-50%);
+  z-index: 9000;
+  display: flex;
+  gap: .4rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: .45rem .8rem;
+  border-radius: 40px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.3);
+  transition: all .3s ease;
+}
+
+#bottom-nav a {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: .82rem;
+  letter-spacing: .1em;
+  color: var(--muted);
+  text-decoration: none;
+  padding: .25rem .7rem;
+  border-radius: 20px;
+  transition: all .2s;
+  border: 1px solid transparent;
+}
+
+#bottom-nav a:hover {
+  color: var(--text);
+  border-color: var(--line);
+  background: var(--surface2);
+}
+
+/* ─── NODE LABELS (SVG text) ─── */
+.node-label {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 400;
+  pointer-events: none;
+  user-select: none;
+}
+
+.node-label.page-label {
+  font-size: 11px;
+}
+
+.node-label.author-label {
+  font-size: 9px;
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 760px) {
+  :root { --panel-w: 0px; }
+
+  #panel {
+    transform: translateX(-260px);
+    width: 260px;
+  }
+  #panel.open { transform: translateX(0); }
+
+  #panel-toggle { display: flex; }
+
+  #graph-wrap { left: 0; }
+  #graph-title { left: 3.8rem; }
+  #bottom-nav { left: 50%; }
+}
+
+/* ─── FADE ANIMATION ─── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+#graph-svg { animation: fadeIn .8s ease; }
+</style>
+</head>
+<body>
+
+<!-- TRICOLOR STRIPE -->
+<div class="page-top-stripe"></div>
+
+<!-- THEME TOGGLE -->
+<button id="theme-toggle" title="切换明暗模式">☀ 明</button>
+
+<!-- MOBILE PANEL TOGGLE -->
+<button id="panel-toggle" title="菜单">☰</button>
+
+<!-- SIDEBAR PANEL -->
+<aside id="panel">
+  <div id="panel-inner">
+
+    <a href="index.html" class="panel-logo">
+      <span class="panel-logo-en">Knowledge Graph</span>
+      <span class="panel-logo-zh">文学史知识图谱</span>
+    </a>
+
+    <div class="panel-section-title">Era Filter</div>
+
+    <div class="filter-group" id="era-filters">
+      <!-- populated by JS -->
+    </div>
+
+    <div class="panel-section-title">Link Types</div>
+    <div>
+      <div class="legend-item">
+        <div class="legend-line" style="background:#5a7a9a"></div>
+        <span class="legend-label">时代承续</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-line" style="background:#4a6fa0;opacity:.8"></div>
+        <span class="legend-label">内容关联</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-line" style="background:#b09840;opacity:.9"></div>
+        <span class="legend-label">真题连线</span>
+      </div>
+    </div>
+
+    <div class="panel-section-title">Node Types</div>
+    <div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--gold-dim);border: 2px solid #6b9fd4;width:14px;height:14px;border-radius:50%"></div>
+        <span class="legend-label">讲义页面（可点击跳转）</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot author"></div>
+        <span class="legend-label">作者 / 概念节点</span>
+      </div>
+    </div>
+
+    <div class="panel-section-title">Controls</div>
+    <button class="panel-btn" id="btn-reset">↺ Reset Layout</button>
+    <button class="panel-btn" id="btn-toggle-authors">隐藏作者节点</button>
+    <a href="index.html" class="panel-btn">← 返回讲义</a>
+
+  </div>
+</aside>
+
+<!-- GRAPH CANVAS -->
+<div id="graph-wrap">
+  <svg id="graph-svg"></svg>
+</div>
+
+<!-- PAGE TITLE -->
+<div id="graph-title">
+  <span class="graph-title-en">Western Literature · Exam Map</span>
+  <span class="graph-title-zh">知识图谱</span>
+</div>
+
+<!-- TOOLTIP -->
+<div id="tooltip">
+  <div class="tooltip-name" id="tt-name"></div>
+  <div class="tooltip-era" id="tt-era"></div>
+  <div class="tooltip-hint" id="tt-hint"></div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav id="bottom-nav">
+  <a href="index.html">← 真题地图</a>
+  <a href="#" id="btn-zoom-in">＋</a>
+  <a href="#" id="btn-zoom-out">－</a>
+  <a href="#" id="btn-zoom-reset">⌂</a>
+</nav>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   GRAPH DATA
+   ═══════════════════════════════════════════════════════ */
+
+const ERA_META = {
+  "hub":    { label: "中心",   color: "#f0f0f0" },
+  "古典":   { label: "古典",   color: "#6b9fd4" },
+  "中世纪": { label: "中世纪", color: "#4a80c0" },
+  "文艺复兴": { label: "文艺复兴", color: "#e05252" },
+  "新古典": { label: "新古典·启蒙", color: "#7ab0e0" },
+  "浪漫":   { label: "浪漫主义", color: "#d94040" },
+  "现实":   { label: "现实主义", color: "#2a65b8" },
+  "现代":   { label: "现代主义", color: "#eeeef4" },
+  "真题":   { label: "真题·专辅", color: "#f0d060" },
+  "author": { label: "作者·概念", color: "#4a5a7a" },
+};
+
+const pages = [
+  { id: "index",       label: "真题地图",          file: "index.html",              era: "hub",    color: "#f0f0f0" },
+  { id: "liang-xi",    label: "两希传统",           file: "liang-xi-chuantong.html", era: "古典",   color: "#6b9fd4" },
+  { id: "xibo-lai",    label: "希伯来传统",         file: "xibo-lai-chuantong.html", era: "古典",   color: "#6b9fd4" },
+  { id: "gu-xila-shenhua", label: "古希腊神话",     file: "gu-xila-shenhua.html",    era: "古典",   color: "#6b9fd4" },
+  { id: "homa",        label: "荷马史诗",           file: "homa-shishi.html",        era: "古典",   color: "#6b9fd4" },
+  { id: "gu-xila-xiju", label: "古希腊戏剧",        file: "gu-xila-xiju.html",       era: "古典",   color: "#6b9fd4" },
+  { id: "xiju-duibi",  label: "戏剧比较",           file: "xiju-duibi.html",         era: "古典",   color: "#6b9fd4" },
+  { id: "gu-luoma",    label: "古罗马文学",         file: "gu-luoma-wenxue.html",    era: "古典",   color: "#6b9fd4" },
+  { id: "edi-pusi",    label: "俄底浦斯王",         file: "edi-pusi-wang.html",      era: "古典",   color: "#6b9fd4" },
+  { id: "zhongshiji",  label: "中世纪文学",         file: "zhongshiji-wenxue.html",  era: "中世纪", color: "#4a80c0" },
+  { id: "wenyifuxing", label: "文艺复兴",           file: "wenyifuxing.html",        era: "文艺复兴", color: "#e05252" },
+  { id: "moliere",     label: "莫里哀",             file: "moliere.html",            era: "新古典", color: "#7ab0e0" },
+  { id: "xingudian",   label: "新古典主义",         file: "xin-gudian-zhuyi.html",   era: "新古典", color: "#7ab0e0" },
+  { id: "qimeng",      label: "启蒙主义文学",       file: "qimeng-zhuyi-wenxue.html",era: "新古典", color: "#7ab0e0" },
+  { id: "langman",     label: "浪漫主义",           file: "langman-zhuyi.html",      era: "浪漫",   color: "#d94040" },
+  { id: "huiteman",    label: "惠特曼",             file: "huiteman.html",           era: "浪漫",   color: "#d94040" },
+  { id: "xianshi",     label: "现实主义",           file: "xianshi-zhuyi.html",      era: "现实",   color: "#2a65b8" },
+  { id: "yibusheng",   label: "易卜生",             file: "yibusheng.html",          era: "现实",   color: "#2a65b8" },
+  { id: "ziranzhyi",   label: "自然主义及其他",     file: "ziran-zhuyi.html",        era: "现代",   color: "#eeeef4" },
+  { id: "ershi",       label: "20世纪文学",         file: "ershi-shiji-wenxue.html", era: "现代",   color: "#eeeef4" },
+  { id: "zhenti",      label: "人大真题",           file: "zhenti.html",             era: "真题",   color: "#f0d060" },
+  { id: "zhuanfuke1",  label: "专辅课①",           file: "zhuanfuke-1.html",        era: "真题",   color: "#f0d060" },
+  { id: "zhuanfuke3",  label: "专辅课③",           file: "zhuanfuke-3.html",        era: "真题",   color: "#f0d060" },
+  { id: "zhuanfuke5",  label: "专辅课⑤",           file: "zhuanfuke-5.html",        era: "真题",   color: "#f0d060" },
+  { id: "zhuanfuke7",  label: "专辅课⑦",           file: "zhuanfuke-7.html",        era: "真题",   color: "#f0d060" },
+];
+
+const authorNodes = [
+  "荷马", "索福克勒斯", "欧里庇得斯", "维吉尔", "但丁", "薄伽丘",
+  "塞万提斯", "莎士比亚", "拜伦", "雨果", "普希金", "司汤达",
+  "巴尔扎克", "福楼拜", "托尔斯泰", "陀思妥耶夫斯基", "契诃夫",
+  "易卜生", "卡夫卡", "普鲁斯特", "乔伊斯", "福克纳", "加缪",
+  "萨特", "马尔克斯"
+].map(name => ({
+  id: "author-" + name,
+  label: name,
+  era: "author",
+  color: "#4a5a7a",
+  isAuthor: true
+}));
+
+// Author → page links
+const authorPageLinks = [
+  { source: "author-荷马",         target: "homa" },
+  { source: "author-索福克勒斯",   target: "gu-xila-xiju" },
+  { source: "author-欧里庇得斯",   target: "gu-xila-xiju" },
+  { source: "author-维吉尔",       target: "gu-luoma" },
+  { source: "author-但丁",         target: "zhongshiji" },
+  { source: "author-薄伽丘",       target: "wenyifuxing" },
+  { source: "author-塞万提斯",     target: "wenyifuxing" },
+  { source: "author-莎士比亚",     target: "wenyifuxing" },
+  { source: "author-拜伦",         target: "langman" },
+  { source: "author-雨果",         target: "langman" },
+  { source: "author-普希金",       target: "langman" },
+  { source: "author-司汤达",       target: "xianshi" },
+  { source: "author-巴尔扎克",     target: "xianshi" },
+  { source: "author-福楼拜",       target: "xianshi" },
+  { source: "author-托尔斯泰",     target: "xianshi" },
+  { source: "author-陀思妥耶夫斯基", target: "xianshi" },
+  { source: "author-契诃夫",       target: "xianshi" },
+  { source: "author-易卜生",       target: "yibusheng" },
+  { source: "author-卡夫卡",       target: "ershi" },
+  { source: "author-普鲁斯特",     target: "ershi" },
+  { source: "author-乔伊斯",       target: "ershi" },
+  { source: "author-福克纳",       target: "ershi" },
+  { source: "author-加缪",         target: "ershi" },
+  { source: "author-萨特",         target: "ershi" },
+  { source: "author-马尔克斯",     target: "ershi" },
+];
+
+const structuralLinks = [
+  // Hub
+  { source: "index", target: "zhenti",      type: "hub" },
+  { source: "index", target: "liang-xi",    type: "hub" },
+
+  // 古典 internal
+  { source: "liang-xi",        target: "xibo-lai",       type: "wiki" },
+  { source: "liang-xi",        target: "gu-xila-shenhua",type: "wiki" },
+  { source: "gu-xila-shenhua", target: "homa",           type: "wiki" },
+  { source: "gu-xila-shenhua", target: "gu-xila-xiju",   type: "wiki" },
+  { source: "gu-xila-xiju",    target: "edi-pusi",       type: "wiki" },
+  { source: "gu-xila-xiju",    target: "xiju-duibi",     type: "wiki" },
+  { source: "gu-xila-shenhua", target: "gu-luoma",       type: "wiki" },
+
+  // Chronological era flow
+  { source: "gu-luoma",    target: "zhongshiji",  type: "era" },
+  { source: "zhongshiji",  target: "wenyifuxing", type: "era" },
+  { source: "wenyifuxing", target: "xingudian",   type: "era" },
+  { source: "xingudian",   target: "qimeng",      type: "era" },
+  { source: "xingudian",   target: "moliere",     type: "wiki" },
+  { source: "qimeng",      target: "langman",     type: "era" },
+  { source: "langman",     target: "huiteman",    type: "wiki" },
+  { source: "langman",     target: "xianshi",     type: "era" },
+  { source: "xianshi",     target: "yibusheng",   type: "wiki" },
+  { source: "xianshi",     target: "ziranzhyi",   type: "era" },
+  { source: "ziranzhyi",   target: "ershi",       type: "era" },
+
+  // 真题 connections
+  { source: "zhenti", target: "gu-xila-shenhua", type: "exam" },
+  { source: "zhenti", target: "wenyifuxing",     type: "exam" },
+  { source: "zhenti", target: "langman",         type: "exam" },
+  { source: "zhenti", target: "xianshi",         type: "exam" },
+  { source: "zhenti", target: "ershi",           type: "exam" },
+
+  // 专辅课 connections
+  { source: "zhuanfuke1", target: "xianshi",         type: "exam" },
+  { source: "zhuanfuke1", target: "gu-xila-shenhua", type: "exam" },
+  { source: "zhuanfuke3", target: "gu-xila-shenhua", type: "exam" },
+  { source: "zhuanfuke3", target: "wenyifuxing",     type: "exam" },
+  { source: "zhuanfuke5", target: "ershi",           type: "exam" },
+  { source: "zhuanfuke5", target: "langman",         type: "exam" },
+  { source: "zhuanfuke7", target: "xianshi",         type: "exam" },
+  { source: "zhuanfuke7", target: "wenyifuxing",     type: "exam" },
+];
+
+/* ═══════════════════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════════════════ */
+
+let showAuthors = true;
+let activeEras = new Set(Object.keys(ERA_META));
+let simulation, zoomBehavior;
+let currentNodes = [], currentLinks = [];
+
+/* ═══════════════════════════════════════════════════════
+   FILTER SIDEBAR SETUP
+   ═══════════════════════════════════════════════════════ */
+
+function buildFilters() {
+  const container = document.getElementById('era-filters');
+  container.innerHTML = '';
+
+  const eraCounts = {};
+  pages.forEach(p => {
+    eraCounts[p.era] = (eraCounts[p.era] || 0) + 1;
+  });
+  eraCounts['author'] = authorNodes.length;
+
+  Object.entries(ERA_META).forEach(([era, meta]) => {
+    const count = eraCounts[era] || 0;
+    if (count === 0) return;
+
+    const item = document.createElement('div');
+    item.className = 'filter-item active';
+    item.dataset.era = era;
+    item.style.color = meta.color;
+    item.innerHTML = `
+      <div class="filter-dot"></div>
+      <span class="filter-label">${meta.label}</span>
+      <span class="filter-count">${count}</span>
+    `;
+    item.addEventListener('click', () => {
+      if (activeEras.has(era)) {
+        activeEras.delete(era);
+        item.classList.remove('active');
+      } else {
+        activeEras.add(era);
+        item.classList.add('active');
+      }
+      rebuildGraph();
+    });
+    container.appendChild(item);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════
+   GRAPH INIT
+   ═══════════════════════════════════════════════════════ */
+
+function initGraph() {
+  const svg = d3.select('#graph-svg');
+  svg.selectAll('*').remove();
+
+  const wrap = document.getElementById('graph-wrap');
+  const W = wrap.clientWidth;
+  const H = wrap.clientHeight;
+
+  // Defs: arrow markers & glow filter
+  const defs = svg.append('defs');
+
+  // Glow filter
+  const filter = defs.append('filter').attr('id', 'glow').attr('x', '-50%').attr('y', '-50%').attr('width', '200%').attr('height', '200%');
+  filter.append('feGaussianBlur').attr('stdDeviation', '3').attr('result', 'coloredBlur');
+  const feMerge = filter.append('feMerge');
+  feMerge.append('feMergeNode').attr('in', 'coloredBlur');
+  feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
+
+  // Arrow markers for each link type
+  const markerDefs = [
+    { id: 'arrow-era',  color: '#5a7a9a' },
+    { id: 'arrow-wiki', color: '#4a6fa0' },
+    { id: 'arrow-exam', color: '#b09840' },
+    { id: 'arrow-hub',  color: '#8a9ab0' },
+    { id: 'arrow-author', color: '#3a4a5a' },
+  ];
+  markerDefs.forEach(m => {
+    defs.append('marker')
+      .attr('id', m.id)
+      .attr('viewBox', '0 -4 8 8')
+      .attr('refX', 14)
+      .attr('refY', 0)
+      .attr('markerWidth', 5)
+      .attr('markerHeight', 5)
+      .attr('orient', 'auto')
+      .append('path')
+        .attr('d', 'M0,-4L8,0L0,4')
+        .attr('fill', m.color)
+        .attr('opacity', 0.7);
+  });
+
+  // Zoomable group
+  const g = svg.append('g').attr('class', 'graph-g');
+
+  zoomBehavior = d3.zoom()
+    .scaleExtent([0.15, 4])
+    .on('zoom', (event) => {
+      g.attr('transform', event.transform);
+    });
+
+  svg.call(zoomBehavior);
+
+  // Initial transform — center the graph
+  svg.call(zoomBehavior.transform, d3.zoomIdentity.translate(W / 2, H / 2).scale(0.85));
+
+  // Build node & link sets based on current filters
+  const allNodes = [
+    ...pages.filter(p => activeEras.has(p.era)),
+    ...(showAuthors ? authorNodes.filter(() => activeEras.has('author')) : [])
+  ];
+
+  const nodeIds = new Set(allNodes.map(n => n.id));
+
+  const allLinks = [
+    ...structuralLinks
+      .filter(l => nodeIds.has(l.source) && nodeIds.has(l.target))
+      .map(l => ({ ...l })),
+    ...(showAuthors ? authorPageLinks
+      .filter(l => nodeIds.has(l.source) && nodeIds.has(l.target))
+      .map(l => ({ ...l, type: 'author' })) : [])
+  ];
+
+  currentNodes = allNodes.map(n => ({ ...n }));
+  currentLinks = allLinks;
+
+  // ─── LINK LAYER ───
+  const link = g.append('g').attr('class', 'links')
+    .selectAll('line')
+    .data(currentLinks)
+    .join('line')
+      .attr('class', d => 'link link-' + d.type)
+      .attr('stroke', d => {
+        if (d.type === 'era')    return '#5a7a9a';
+        if (d.type === 'wiki')   return '#4a6fa0';
+        if (d.type === 'exam')   return '#b09840';
+        if (d.type === 'hub')    return '#8a9ab0';
+        if (d.type === 'author') return '#2a3a4a';
+        return '#3a4a5a';
+      })
+      .attr('stroke-width', d => {
+        if (d.type === 'era')    return 1.5;
+        if (d.type === 'exam')   return 1.8;
+        if (d.type === 'hub')    return 2;
+        if (d.type === 'author') return 0.8;
+        return 1.2;
+      })
+      .attr('stroke-opacity', d => {
+        if (d.type === 'author') return 0.25;
+        if (d.type === 'exam')   return 0.55;
+        return 0.4;
+      })
+      .attr('stroke-dasharray', d => d.type === 'author' ? '3 3' : null)
+      .attr('marker-end', d => `url(#arrow-${d.type})`);
+
+  // ─── NODE LAYER ───
+  const nodeG = g.append('g').attr('class', 'nodes')
+    .selectAll('g')
+    .data(currentNodes)
+    .join('g')
+      .attr('class', 'node')
+      .attr('cursor', d => d.file ? 'pointer' : 'default')
+      .call(d3.drag()
+        .on('start', dragstarted)
+        .on('drag',  dragged)
+        .on('end',   dragended))
+      .on('click', nodeClicked)
+      .on('mouseenter', nodeHoverIn)
+      .on('mouseleave', nodeHoverOut);
+
+  // Outer glow ring for page nodes
+  nodeG.filter(d => !d.isAuthor)
+    .append('circle')
+      .attr('class', 'node-ring')
+      .attr('r', d => nodeRadius(d) + 4)
+      .attr('fill', 'none')
+      .attr('stroke', d => d.color)
+      .attr('stroke-width', 1)
+      .attr('stroke-opacity', 0.15);
+
+  // Main circle
+  nodeG.append('circle')
+    .attr('class', 'node-circle')
+    .attr('r', d => nodeRadius(d))
+    .attr('fill', d => d.isAuthor ? 'rgba(26,30,46,0.9)' : nodeColor(d))
+    .attr('stroke', d => d.color)
+    .attr('stroke-width', d => d.isAuthor ? 1 : 1.8)
+    .attr('stroke-opacity', d => d.isAuthor ? 0.5 : 0.85);
+
+  // Hub special pulse ring
+  nodeG.filter(d => d.id === 'index')
+    .append('circle')
+      .attr('class', 'hub-pulse')
+      .attr('r', 24)
+      .attr('fill', 'none')
+      .attr('stroke', '#f0f0f0')
+      .attr('stroke-width', 0.8)
+      .attr('stroke-opacity', 0.2);
+
+  // Page labels (always visible)
+  nodeG.filter(d => !d.isAuthor)
+    .append('text')
+      .attr('class', 'node-label page-label')
+      .attr('y', d => nodeRadius(d) + 13)
+      .attr('text-anchor', 'middle')
+      .attr('fill', d => d.color)
+      .attr('opacity', 0.9)
+      .text(d => d.label);
+
+  // Author labels (hidden by default, shown on hover)
+  nodeG.filter(d => d.isAuthor)
+    .append('text')
+      .attr('class', 'node-label author-label')
+      .attr('y', d => nodeRadius(d) + 10)
+      .attr('text-anchor', 'middle')
+      .attr('fill', '#8a9ab0')
+      .attr('opacity', 0)
+      .text(d => d.label);
+
+  // ─── FORCE SIMULATION ───
+  simulation = d3.forceSimulation(currentNodes)
+    .force('link', d3.forceLink(currentLinks)
+      .id(d => d.id)
+      .distance(d => {
+        if (d.type === 'author') return 70;
+        if (d.type === 'hub')    return 160;
+        if (d.type === 'exam')   return 190;
+        if (d.type === 'era')    return 140;
+        return 120;
+      })
+      .strength(d => {
+        if (d.type === 'author') return 0.25;
+        if (d.type === 'hub')    return 0.4;
+        if (d.type === 'exam')   return 0.2;
+        return 0.35;
+      })
+    )
+    .force('charge', d3.forceManyBody()
+      .strength(d => d.isAuthor ? -80 : -280)
+      .distanceMax(400)
+    )
+    .force('collision', d3.forceCollide()
+      .radius(d => nodeRadius(d) + (d.isAuthor ? 20 : 35))
+      .strength(0.8)
+    )
+    .force('center', d3.forceCenter(0, 0))
+    .force('x', d3.forceX(0).strength(0.03))
+    .force('y', d3.forceY(0).strength(0.03))
+    .alphaDecay(0.025)
+    .velocityDecay(0.35)
+    .on('tick', ticked);
+
+  function ticked() {
+    link
+      .attr('x1', d => d.source.x)
+      .attr('y1', d => d.source.y)
+      .attr('x2', d => d.target.x)
+      .attr('y2', d => d.target.y);
+
+    nodeG
+      .attr('transform', d => `translate(${d.x},${d.y})`);
+  }
+
+  function dragstarted(event, d) {
+    if (!event.active) simulation.alphaTarget(0.3).restart();
+    d.fx = d.x;
+    d.fy = d.y;
+  }
+
+  function dragged(event, d) {
+    d.fx = event.x;
+    d.fy = event.y;
+  }
+
+  function dragended(event, d) {
+    if (!event.active) simulation.alphaTarget(0);
+    d.fx = null;
+    d.fy = null;
+  }
+
+  // ─── IDLE WOBBLE ───
+  let wobbleTimer = setInterval(() => {
+    if (simulation.alpha() < 0.02) {
+      simulation.alpha(0.04).restart();
+    }
+  }, 4000);
+
+  // Store cleanup fn
+  svg.node()._cleanup = () => clearInterval(wobbleTimer);
+
+  return { link, nodeG, g };
+}
+
+/* ─── NODE HELPERS ─── */
+function nodeRadius(d) {
+  if (d.id === 'index')    return 18;
+  if (d.era === 'hub')     return 16;
+  if (d.era === '真题')    return 13;
+  if (d.isAuthor)          return 5;
+  return 11;
+}
+
+function nodeColor(d) {
+  if (d.id === 'index') return 'rgba(240,240,240,0.15)';
+  const hex = d.color;
+  // Convert hex to rgba with low opacity fill
+  const r = parseInt(hex.slice(1,3), 16);
+  const g = parseInt(hex.slice(3,5), 16);
+  const b = parseInt(hex.slice(5,7), 16);
+  return `rgba(${r},${g},${b},0.12)`;
+}
+
+/* ─── HOVER INTERACTIONS ─── */
+function nodeHoverIn(event, d) {
+  const svg = d3.select('#graph-svg');
+
+  // Highlight connected nodes
+  const connectedIds = new Set([d.id]);
+  currentLinks.forEach(l => {
+    const srcId = l.source.id || l.source;
+    const tgtId = l.target.id || l.target;
+    if (srcId === d.id) connectedIds.add(tgtId);
+    if (tgtId === d.id) connectedIds.add(srcId);
+  });
+
+  svg.selectAll('.node').attr('opacity', n => connectedIds.has(n.id) ? 1 : 0.18);
+  svg.selectAll('.link').attr('opacity', l => {
+    const srcId = l.source.id || l.source;
+    const tgtId = l.target.id || l.target;
+    return (srcId === d.id || tgtId === d.id) ? 0.9 : 0.05;
+  });
+
+  // Show author label on hover
+  if (d.isAuthor) {
+    d3.select(event.currentTarget).select('.author-label').attr('opacity', 1);
+  }
+
+  // Scale up hovered node
+  d3.select(event.currentTarget).select('.node-circle')
+    .attr('stroke-width', d.isAuthor ? 1.5 : 2.5);
+
+  // Tooltip
+  const tt = document.getElementById('tooltip');
+  document.getElementById('tt-name').textContent = d.label;
+  document.getElementById('tt-era').textContent = ERA_META[d.era]?.label || d.era;
+  document.getElementById('tt-hint').textContent = d.file ? '点击跳转讲义 →' : '作者 / 概念节点';
+  tt.classList.add('show');
+  moveTooltip(event);
+}
+
+function nodeHoverOut(event, d) {
+  const svg = d3.select('#graph-svg');
+  svg.selectAll('.node').attr('opacity', 1);
+  svg.selectAll('.link').attr('opacity', l => {
+    if (l.type === 'author') return 0.25;
+    if (l.type === 'exam')   return 0.55;
+    return 0.4;
+  });
+
+  if (d.isAuthor) {
+    d3.select(event.currentTarget).select('.author-label').attr('opacity', 0);
+  }
+
+  d3.select(event.currentTarget).select('.node-circle')
+    .attr('stroke-width', d.isAuthor ? 1 : 1.8);
+
+  document.getElementById('tooltip').classList.remove('show');
+}
+
+function moveTooltip(event) {
+  const tt = document.getElementById('tooltip');
+  const x = event.clientX + 14;
+  const y = event.clientY - 20;
+  const maxX = window.innerWidth - 200;
+  const maxY = window.innerHeight - 100;
+  tt.style.left = Math.min(x, maxX) + 'px';
+  tt.style.top  = Math.min(y, maxY) + 'px';
+}
+
+document.getElementById('graph-svg').addEventListener('mousemove', (e) => {
+  const tt = document.getElementById('tooltip');
+  if (tt.classList.contains('show')) moveTooltip(e);
+});
+
+/* ─── CLICK → NAVIGATE ─── */
+function nodeClicked(event, d) {
+  if (d.file && !event.defaultPrevented) {
+    window.location.href = d.file;
+  }
+}
+
+/* ─── REBUILD GRAPH ON FILTER CHANGE ─── */
+function rebuildGraph() {
+  const svg = document.getElementById('graph-svg');
+  if (svg._cleanup) svg._cleanup();
+  initGraph();
+}
+
+/* ─── RESET LAYOUT ─── */
+document.getElementById('btn-reset').addEventListener('click', () => {
+  rebuildGraph();
+});
+
+/* ─── TOGGLE AUTHORS ─── */
+const btnToggleAuthors = document.getElementById('btn-toggle-authors');
+btnToggleAuthors.addEventListener('click', () => {
+  showAuthors = !showAuthors;
+  btnToggleAuthors.textContent = showAuthors ? '隐藏作者节点' : '显示作者节点';
+
+  // Toggle author era filter UI
+  const authorFilter = document.querySelector('[data-era="author"]');
+  if (authorFilter) {
+    if (showAuthors) {
+      authorFilter.classList.add('active');
+      activeEras.add('author');
+    } else {
+      authorFilter.classList.remove('active');
+      activeEras.delete('author');
+    }
+  }
+  rebuildGraph();
+});
+
+/* ─── ZOOM CONTROLS ─── */
+document.getElementById('btn-zoom-in').addEventListener('click', e => {
+  e.preventDefault();
+  const svg = d3.select('#graph-svg');
+  zoomBehavior.scaleBy(svg.transition().duration(300), 1.3);
+});
+
+document.getElementById('btn-zoom-out').addEventListener('click', e => {
+  e.preventDefault();
+  const svg = d3.select('#graph-svg');
+  zoomBehavior.scaleBy(svg.transition().duration(300), 0.77);
+});
+
+document.getElementById('btn-zoom-reset').addEventListener('click', e => {
+  e.preventDefault();
+  const wrap = document.getElementById('graph-wrap');
+  const W = wrap.clientWidth;
+  const H = wrap.clientHeight;
+  d3.select('#graph-svg')
+    .transition().duration(450)
+    .call(zoomBehavior.transform, d3.zoomIdentity.translate(W / 2, H / 2).scale(0.85));
+});
+
+/* ─── THEME TOGGLE ─── */
+const themeBtn = document.getElementById('theme-toggle');
+const root = document.documentElement;
+
+function applyTheme(theme) {
+  root.dataset.theme = theme;
+  themeBtn.textContent = theme === 'light' ? '☾ 暗' : '☀ 明';
+  localStorage.setItem('theme', theme);
+}
+
+applyTheme(localStorage.getItem('theme') || 'dark');
+
+themeBtn.addEventListener('click', () => {
+  applyTheme(root.dataset.theme === 'light' ? 'dark' : 'light');
+});
+
+/* ─── MOBILE SIDEBAR ─── */
+document.getElementById('panel-toggle').addEventListener('click', () => {
+  document.getElementById('panel').classList.toggle('open');
+});
+
+/* ─── WINDOW RESIZE ─── */
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    rebuildGraph();
+  }, 300);
+});
+
+/* ─── TOUCH SUPPORT ─── */
+// D3 drag handles touch natively via pointer events.
+
+/* ═══════════════════════════════════════════════════════
+   BOOT
+   ═══════════════════════════════════════════════════════ */
+buildFilters();
+initGraph();
+</script>
+</body>
+</html>
