@@ -291,9 +291,250 @@ body::before {
   .card { min-height: 70px; }
   .footer { height: auto; padding: 1rem 0; }
 }
+
+/* ─── INTRO OVERLAY ─── */
+#intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 8000;
+  overflow: hidden;
+  cursor: pointer;
+}
+.wf-grid {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  align-items: flex-start;
+}
+.wf-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  will-change: transform;
+}
+.wf-col:nth-child(1) { animation: wfUp 22s linear infinite; margin-top: -40px; }
+.wf-col:nth-child(2) { animation: wfUp 29s linear infinite; margin-top:  80px; }
+.wf-col:nth-child(3) { animation: wfUp 18s linear infinite; margin-top: -20px; }
+.wf-col:nth-child(4) { animation: wfUp 25s linear infinite; margin-top:  50px; }
+.wf-col:nth-child(5) { animation: wfUp 32s linear infinite; margin-top: -60px; }
+@keyframes wfUp {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
+}
+.wf-col img {
+  width: 100%;
+  display: block;
+  border-radius: 2px;
+  object-fit: cover;
+  filter: grayscale(25%) sepia(15%);
+  transition: filter .4s;
+}
+.wf-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(12,15,26,.55) 0%,
+    rgba(12,15,26,.75) 40%,
+    rgba(12,15,26,.75) 60%,
+    rgba(12,15,26,.55) 100%
+  );
+}
+.wf-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  pointer-events: none;
+}
+.wf-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: .85rem;
+  letter-spacing: .25em;
+  color: rgba(200,220,255,.6);
+  text-transform: uppercase;
+  margin-bottom: .9rem;
+}
+.wf-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  font-weight: 600;
+  color: #f0f0f0;
+  letter-spacing: .1em;
+  line-height: 1.15;
+  margin-bottom: .6rem;
+}
+.wf-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 2.2vw, 1.35rem);
+  color: rgba(200,220,255,.55);
+  letter-spacing: .12em;
+  margin-bottom: 2.2rem;
+}
+#enter-btn {
+  pointer-events: all;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  letter-spacing: .2em;
+  color: #f0f0f0;
+  background: transparent;
+  border: 1px solid rgba(200,220,255,.4);
+  padding: .65rem 2.2rem;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background .25s, border-color .25s;
+}
+#enter-btn:hover {
+  background: rgba(200,220,255,.12);
+  border-color: rgba(200,220,255,.7);
+}
+.wf-hint {
+  position: absolute;
+  bottom: 1.8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: .72rem;
+  letter-spacing: .15em;
+  color: rgba(200,220,255,.28);
+  pointer-events: none;
+}
+#intro-overlay.wf-out {
+  animation: wfFadeOut .7s ease forwards;
+}
+@keyframes wfFadeOut {
+  to { opacity: 0; pointer-events: none; }
+}
+@media (max-width: 640px) {
+  .wf-col:nth-child(4),
+  .wf-col:nth-child(5) { display: none; }
+}
 </style>
 </head>
 <body>
+
+<!-- ─── INTRO OVERLAY ─── -->
+<div id="intro-overlay">
+  <div class="wf-grid">
+
+    <!-- 列1 -->
+    <div class="wf-col">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Homer_British_Museum.jpg/330px-Homer_British_Museum.jpg" alt="荷马">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/William_Shakespeare_by_John_Taylor%2C_edited.jpg/330px-William_Shakespeare_by_John_Taylor%2C_edited.jpg" alt="莎士比亚">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Franz_Kafka%2C_1923.jpg/330px-Franz_Kafka%2C_1923.jpg" alt="卡夫卡">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Vasily_Perov_-_%D0%9F%D0%BE%D1%80%D1%82%D1%80%D0%B5%D1%82_%D0%A4.%D0%9C.%D0%94%D0%BE%D1%81%D1%82%D0%BE%D0%B5%D0%B2%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_-_Google_Art_Project.jpg/330px-Vasily_Perov_-_%D0%9F%D0%BE%D1%80%D1%82%D1%80%D0%B5%D1%82_%D0%A4.%D0%9C.%D0%94%D0%BE%D1%81%D1%82%D0%BE%D0%B5%D0%B2%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_-_Google_Art_Project.jpg" alt="陀思妥耶夫斯基">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Byron_1813_by_Phillips.jpg/330px-Byron_1813_by_Phillips.jpg" alt="拜伦">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/%C3%89tienne_Carjat%2C_Portrait_of_Charles_Baudelaire%2C_circa_1862.jpg/330px-%C3%89tienne_Carjat%2C_Portrait_of_Charles_Baudelaire%2C_circa_1862.jpg" alt="波德莱尔">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Stendhal.jpg/330px-Stendhal.jpg" alt="司汤达">
+      <!-- duplicate for seamless loop -->
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Homer_British_Museum.jpg/330px-Homer_British_Museum.jpg" alt="荷马">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/William_Shakespeare_by_John_Taylor%2C_edited.jpg/330px-William_Shakespeare_by_John_Taylor%2C_edited.jpg" alt="莎士比亚">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Franz_Kafka%2C_1923.jpg/330px-Franz_Kafka%2C_1923.jpg" alt="卡夫卡">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Vasily_Perov_-_%D0%9F%D0%BE%D1%80%D1%82%D1%80%D0%B5%D1%82_%D0%A4.%D0%9C.%D0%94%D0%BE%D1%81%D1%82%D0%BE%D0%B5%D0%B2%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_-_Google_Art_Project.jpg/330px-Vasily_Perov_-_%D0%9F%D0%BE%D1%80%D1%82%D1%80%D0%B5%D1%82_%D0%A4.%D0%9C.%D0%94%D0%BE%D1%81%D1%82%D0%BE%D0%B5%D0%B2%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_-_Google_Art_Project.jpg" alt="陀思妥耶夫斯基">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Byron_1813_by_Phillips.jpg/330px-Byron_1813_by_Phillips.jpg" alt="拜伦">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/%C3%89tienne_Carjat%2C_Portrait_of_Charles_Baudelaire%2C_circa_1862.jpg/330px-%C3%89tienne_Carjat%2C_Portrait_of_Charles_Baudelaire%2C_circa_1862.jpg" alt="波德莱尔">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Stendhal.jpg/330px-Stendhal.jpg" alt="司汤达">
+    </div>
+
+    <!-- 列2 -->
+    <div class="wf-col">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Plato_Silanion_Musei_Capitolini_MC1377.png/330px-Plato_Silanion_Musei_Capitolini_MC1377.png" alt="柏拉图">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Bargello_-_Kapelle_Fresko_2a.jpg/330px-Bargello_-_Kapelle_Fresko_2a.jpg" alt="但丁">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Victor_Hugo_by_%C3%89tienne_Carjat_1876_-_full.jpg/330px-Victor_Hugo_by_%C3%89tienne_Carjat_1876_-_full.jpg" alt="雨果">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Leo_Tolstoy_1908_Portrait_%283x4_cropped%29.jpg/330px-Leo_Tolstoy_1908_Portrait_%283x4_cropped%29.jpg" alt="托尔斯泰">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Revolutionary_Joyce_Better_Contrast.jpg/330px-Revolutionary_Joyce_Better_Contrast.jpg" alt="乔伊斯">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Pierre_Mignard_-_Portrait_de_Jean-Baptiste_Poquelin_dit_Moli%C3%A8re_%281622-1673%29_-_Google_Art_Project_%28cropped%29.jpg/330px-Pierre_Mignard_-_Portrait_de_Jean-Baptiste_Poquelin_dit_Moli%C3%A8re_%281622-1673%29_-_Google_Art_Project_%28cropped%29.jpg" alt="莫里哀">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Jean-Jacques_Rousseau_%28painted_portrait%29.jpg/330px-Jean-Jacques_Rousseau_%28painted_portrait%29.jpg" alt="卢梭">
+      <!-- duplicate -->
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Plato_Silanion_Musei_Capitolini_MC1377.png/330px-Plato_Silanion_Musei_Capitolini_MC1377.png" alt="柏拉图">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Bargello_-_Kapelle_Fresko_2a.jpg/330px-Bargello_-_Kapelle_Fresko_2a.jpg" alt="但丁">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Victor_Hugo_by_%C3%89tienne_Carjat_1876_-_full.jpg/330px-Victor_Hugo_by_%C3%89tienne_Carjat_1876_-_full.jpg" alt="雨果">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Leo_Tolstoy_1908_Portrait_%283x4_cropped%29.jpg/330px-Leo_Tolstoy_1908_Portrait_%283x4_cropped%29.jpg" alt="托尔斯泰">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Revolutionary_Joyce_Better_Contrast.jpg/330px-Revolutionary_Joyce_Better_Contrast.jpg" alt="乔伊斯">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Pierre_Mignard_-_Portrait_de_Jean-Baptiste_Poquelin_dit_Moli%C3%A8re_%281622-1673%29_-_Google_Art_Project_%28cropped%29.jpg/330px-Pierre_Mignard_-_Portrait_de_Jean-Baptiste_Poquelin_dit_Moli%C3%A8re_%281622-1673%29_-_Google_Art_Project_%28cropped%29.jpg" alt="莫里哀">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Jean-Jacques_Rousseau_%28painted_portrait%29.jpg/330px-Jean-Jacques_Rousseau_%28painted_portrait%29.jpg" alt="卢梭">
+    </div>
+
+    <!-- 列3 -->
+    <div class="wf-col">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Aristotle_Altemps_Inv8575.jpg/330px-Aristotle_Altemps_Inv8575.jpg" alt="亚里士多德">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Goethe_%28Stieler_1828%29.jpg/330px-Goethe_%28Stieler_1828%29.jpg" alt="歌德">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Gustave_Flaubert.jpg/330px-Gustave_Flaubert.jpg" alt="福楼拜">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/George_Charles_Beresford_-_Virginia_Woolf_in_1902_-_Restoration.jpg/330px-George_Charles_Beresford_-_Virginia_Woolf_in_1902_-_Restoration.jpg" alt="伍尔夫">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Nadar_%28atelier_de%29_-_Emile_Zola%2C_13-556535.jpg/330px-Nadar_%28atelier_de%29_-_Emile_Zola%2C_13-556535.jpg" alt="左拉">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Portrait_de_Jean_Racine_d%27apr%C3%A8s_Jean-Baptiste_Santerre.jpg/330px-Portrait_de_Jean_Racine_d%27apr%C3%A8s_Jean-Baptiste_Santerre.jpg" alt="拉辛">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Cervantes_J%C3%A1uregui.jpg/330px-Cervantes_J%C3%A1uregui.jpg" alt="塞万提斯">
+      <!-- duplicate -->
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Aristotle_Altemps_Inv8575.jpg/330px-Aristotle_Altemps_Inv8575.jpg" alt="亚里士多德">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Goethe_%28Stieler_1828%29.jpg/330px-Goethe_%28Stieler_1828%29.jpg" alt="歌德">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Gustave_Flaubert.jpg/330px-Gustave_Flaubert.jpg" alt="福楼拜">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/George_Charles_Beresford_-_Virginia_Woolf_in_1902_-_Restoration.jpg/330px-George_Charles_Beresford_-_Virginia_Woolf_in_1902_-_Restoration.jpg" alt="伍尔夫">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Nadar_%28atelier_de%29_-_Emile_Zola%2C_13-556535.jpg/330px-Nadar_%28atelier_de%29_-_Emile_Zola%2C_13-556535.jpg" alt="左拉">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Portrait_de_Jean_Racine_d%27apr%C3%A8s_Jean-Baptiste_Santerre.jpg/330px-Portrait_de_Jean_Racine_d%27apr%C3%A8s_Jean-Baptiste_Santerre.jpg" alt="拉辛">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Cervantes_J%C3%A1uregui.jpg/330px-Cervantes_J%C3%A1uregui.jpg" alt="塞万提斯">
+    </div>
+
+    <!-- 列4 -->
+    <div class="wf-col">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Sophocles_pushkin.jpg/330px-Sophocles_pushkin.jpg" alt="索福克勒斯">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Atelier_de_Nicolas_de_Largilli%C3%A8re%2C_portrait_de_Voltaire%2C_d%C3%A9tail_%28mus%C3%A9e_Carnavalet%29_-002.jpg/330px-Atelier_de_Nicolas_de_Largilli%C3%A8re%2C_portrait_de_Voltaire%2C_d%C3%A9tail_%28mus%C3%A9e_Carnavalet%29_-002.jpg" alt="伏尔泰">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Otto_Wegener_Proust_vers_1895_bis.jpg/330px-Otto_Wegener_Proust_vers_1895_bis.jpg" alt="普鲁斯特">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Henrik_Ibsen_av_Eilif_Peterssen_1895.jpg/330px-Henrik_Ibsen_av_Eilif_Peterssen_1895.jpg" alt="易卜生">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Anton_Chekhov_1889.jpg/330px-Anton_Chekhov_1889.jpg" alt="契诃夫">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Daniel_Defoe_Kneller_Style.jpg/330px-Daniel_Defoe_Kneller_Style.jpg" alt="笛福">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Pierre_Corneille_2.jpg/330px-Pierre_Corneille_2.jpg" alt="高乃依">
+      <!-- duplicate -->
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Sophocles_pushkin.jpg/330px-Sophocles_pushkin.jpg" alt="索福克勒斯">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Atelier_de_Nicolas_de_Largilli%C3%A8re%2C_portrait_de_Voltaire%2C_d%C3%A9tail_%28mus%C3%A9e_Carnavalet%29_-002.jpg/330px-Atelier_de_Nicolas_de_Largilli%C3%A8re%2C_portrait_de_Voltaire%2C_d%C3%A9tail_%28mus%C3%A9e_Carnavalet%29_-002.jpg" alt="伏尔泰">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Otto_Wegener_Proust_vers_1895_bis.jpg/330px-Otto_Wegener_Proust_vers_1895_bis.jpg" alt="普鲁斯特">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Henrik_Ibsen_av_Eilif_Peterssen_1895.jpg/330px-Henrik_Ibsen_av_Eilif_Peterssen_1895.jpg" alt="易卜生">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Anton_Chekhov_1889.jpg/330px-Anton_Chekhov_1889.jpg" alt="契诃夫">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Daniel_Defoe_Kneller_Style.jpg/330px-Daniel_Defoe_Kneller_Style.jpg" alt="笛福">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Pierre_Corneille_2.jpg/330px-Pierre_Corneille_2.jpg" alt="高乃依">
+    </div>
+
+    <!-- 列5 -->
+    <div class="wf-col">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/%E5%A5%A5%C2%B7%E5%B7%B4%E5%B0%94%E6%89%8E%E5%85%8B.png/330px-%E5%A5%A5%C2%B7%E5%B7%B4%E5%B0%94%E6%89%8E%E5%85%8B.png" alt="巴尔扎克">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Anton_Chekhov_1889.jpg/330px-Anton_Chekhov_1889.jpg" alt="契诃夫">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Sophocles_pushkin.jpg/330px-Sophocles_pushkin.jpg" alt="索福克勒斯">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Byron_1813_by_Phillips.jpg/330px-Byron_1813_by_Phillips.jpg" alt="拜伦">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Leo_Tolstoy_1908_Portrait_%283x4_cropped%29.jpg/330px-Leo_Tolstoy_1908_Portrait_%283x4_cropped%29.jpg" alt="托尔斯泰">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Gustave_Flaubert.jpg/330px-Gustave_Flaubert.jpg" alt="福楼拜">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Franz_Kafka%2C_1923.jpg/330px-Franz_Kafka%2C_1923.jpg" alt="卡夫卡">
+      <!-- duplicate -->
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/%E5%A5%A5%C2%B7%E5%B7%B4%E5%B0%94%E6%89%8E%E5%85%8B.png/330px-%E5%A5%A5%C2%B7%E5%B7%B4%E5%B0%94%E6%89%8E%E5%85%8B.png" alt="巴尔扎克">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Anton_Chekhov_1889.jpg/330px-Anton_Chekhov_1889.jpg" alt="契诃夫">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Sophocles_pushkin.jpg/330px-Sophocles_pushkin.jpg" alt="索福克勒斯">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Byron_1813_by_Phillips.jpg/330px-Byron_1813_by_Phillips.jpg" alt="拜伦">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Leo_Tolstoy_1908_Portrait_%283x4_cropped%29.jpg/330px-Leo_Tolstoy_1908_Portrait_%283x4_cropped%29.jpg" alt="托尔斯泰">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Gustave_Flaubert.jpg/330px-Gustave_Flaubert.jpg" alt="福楼拜">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Franz_Kafka%2C_1923.jpg/330px-Franz_Kafka%2C_1923.jpg" alt="卡夫卡">
+    </div>
+
+  </div><!-- .wf-grid -->
+
+  <div class="wf-veil"></div>
+
+  <div class="wf-center">
+    <div class="wf-label">Green Light Lit · 绿光文学考研</div>
+    <h1 class="wf-title">人大文学考研<br>真题地图</h1>
+    <p class="wf-sub">以文学史为经，真题为纬</p>
+    <button id="enter-btn">进入 →</button>
+  </div>
+
+  <div class="wf-hint">点击任意位置进入</div>
+</div><!-- #intro-overlay -->
 
 <div class="tricolor"></div>
 <button id="theme-toggle" onclick="toggleTheme()">☀ Light</button>
@@ -398,6 +639,18 @@ body::before {
     document.getElementById('theme-toggle').textContent = '☾ Dark';
   }
 })();
+
+// Intro overlay dismiss
+(function(){
+  const overlay = document.getElementById('intro-overlay');
+  if(!overlay) return;
+  function dismiss(){
+    overlay.classList.add('wf-out');
+    setTimeout(function(){ overlay.style.display = 'none'; }, 700);
+  }
+  overlay.addEventListener('click', dismiss);
+})();
+
 function toggleTheme(){
   const btn = document.getElementById('theme-toggle');
   const html = document.documentElement;
