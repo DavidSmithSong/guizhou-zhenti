@@ -14,4 +14,4 @@ Disallow: /
 User-agent: CCBot
 Disallow: /
 
-Sitemap: https://guizhou-lit.github.io/sitemap.xml
+Sitemap: https://davidsmithsong.github.io/guizhou-zhenti/sitemap.xml
