@@ -315,14 +315,17 @@ body::before {
   gap: 6px;
   will-change: transform;
 }
-.wf-col:nth-child(1) { animation: wfUp 22s linear infinite; margin-top: -40px; }
-.wf-col:nth-child(2) { animation: wfUp 29s linear infinite; margin-top:  80px; }
-.wf-col:nth-child(3) { animation: wfUp 18s linear infinite; margin-top: -20px; }
-.wf-col:nth-child(4) { animation: wfUp 25s linear infinite; margin-top:  50px; }
-.wf-col:nth-child(5) { animation: wfUp 32s linear infinite; margin-top: -60px; }
-@keyframes wfUp {
-  from { transform: translateY(0); }
-  to   { transform: translateY(-50%); }
+.wf-col:nth-child(1) { animation: wfDown 55s linear infinite; margin-top: -40px; }
+.wf-col:nth-child(2) { animation: wfDown 72s linear infinite; margin-top:  80px; }
+.wf-col:nth-child(3) { animation: wfDown 48s linear infinite; margin-top: -20px; }
+.wf-col:nth-child(4) { animation: wfDown 64s linear infinite; margin-top:  55px; }
+.wf-col:nth-child(5) { animation: wfDown 80s linear infinite; margin-top: -60px; }
+.wf-col:nth-child(6) { animation: wfDown 58s linear infinite; margin-top:  30px; }
+.wf-col:nth-child(7) { animation: wfDown 70s linear infinite; margin-top: -50px; }
+.wf-col:nth-child(8) { animation: wfDown 44s linear infinite; margin-top:  70px; }
+@keyframes wfDown {
+  from { transform: translateY(-50%); }
+  to   { transform: translateY(0); }
 }
 .wf-col img {
   width: 100%;
@@ -354,31 +357,79 @@ body::before {
   padding: 2rem;
   pointer-events: none;
 }
-.wf-label {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: .85rem;
-  letter-spacing: .25em;
-  color: rgba(200,220,255,.6);
-  text-transform: uppercase;
-  margin-bottom: .9rem;
+/* Green light dot */
+.gl-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 8px #4ade80, 0 0 28px #22c55e, 0 0 80px rgba(74,222,128,.35);
+  margin: 0 auto 2rem;
+  animation: glPulse 3.5s ease-in-out infinite;
 }
-.wf-title {
+@keyframes glPulse {
+  0%,100% { box-shadow: 0 0 8px #4ade80, 0 0 28px #22c55e, 0 0 80px rgba(74,222,128,.35); }
+  50%      { box-shadow: 0 0 18px #4ade80, 0 0 60px #22c55e, 0 0 130px rgba(74,222,128,.25); }
+}
+
+/* Logo */
+.gl-logo {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  margin-bottom: 2.5rem;
+}
+.gl-logo-icon {
+  flex-shrink: 0;
+}
+.gl-logo-text-cn {
   font-family: 'Noto Serif SC', serif;
-  font-size: clamp(2.2rem, 6vw, 4rem);
+  font-size: 1.6rem;
   font-weight: 600;
   color: #f0f0f0;
-  letter-spacing: .1em;
-  line-height: 1.15;
-  margin-bottom: .6rem;
+  letter-spacing: .12em;
+  line-height: 1;
 }
-.wf-sub {
+.gl-logo-text-en {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
-  font-size: clamp(1rem, 2.2vw, 1.35rem);
-  color: rgba(200,220,255,.55);
-  letter-spacing: .12em;
-  margin-bottom: 2.2rem;
+  font-size: .68rem;
+  color: rgba(200,220,255,.45);
+  letter-spacing: .35em;
+  text-transform: uppercase;
+  margin-top: .2rem;
+}
+
+/* Gatsby quote */
+.gatsby-quote {
+  max-width: 520px;
+  margin-bottom: 2.4rem;
+  text-align: center;
+}
+.gatsby-cn {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(.95rem, 2vw, 1.12rem);
+  font-weight: 300;
+  color: rgba(240,240,240,.88);
+  line-height: 1.9;
+  letter-spacing: .04em;
+  margin-bottom: .8rem;
+}
+.gatsby-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(1.2rem, 2.4vw, 1.65rem);
+  color: rgba(240,240,240,.75);
+  line-height: 1.85;
+  letter-spacing: .06em;
+}
+.gatsby-source {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .68rem;
+  letter-spacing: .2em;
+  color: rgba(200,220,255,.25);
+  margin-top: .6rem;
+  text-transform: uppercase;
 }
 #enter-btn {
   pointer-events: all;
@@ -417,7 +468,10 @@ body::before {
 }
 @media (max-width: 640px) {
   .wf-col:nth-child(4),
-  .wf-col:nth-child(5) { display: none; }
+  .wf-col:nth-child(5),
+  .wf-col:nth-child(6),
+  .wf-col:nth-child(7),
+  .wf-col:nth-child(8) { display: none; }
 }
 </style>
 </head>
@@ -522,18 +576,97 @@ body::before {
       <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Franz_Kafka%2C_1923.jpg/330px-Franz_Kafka%2C_1923.jpg" alt="卡夫卡">
     </div>
 
+    <!-- 列6 -->
+    <div class="wf-col">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Pushkin_self-portrait_1820s.jpg/330px-Pushkin_self-portrait_1820s.jpg" alt="普希金">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/%E5%A5%A5%C2%B7%E5%B7%B4%E5%B0%94%E6%89%8E%E5%85%8B.png/330px-%E5%A5%A5%C2%B7%E5%B7%B4%E5%B0%94%E6%89%8E%E5%85%8B.png" alt="巴尔扎克">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Henrik_Ibsen_av_Eilif_Peterssen_1895.jpg/330px-Henrik_Ibsen_av_Eilif_Peterssen_1895.jpg" alt="易卜生">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/George_Charles_Beresford_-_Virginia_Woolf_in_1902_-_Restoration.jpg/330px-George_Charles_Beresford_-_Virginia_Woolf_in_1902_-_Restoration.jpg" alt="伍尔夫">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Franz_Kafka%2C_1923.jpg/330px-Franz_Kafka%2C_1923.jpg" alt="卡夫卡">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Anton_Chekhov_1889.jpg/330px-Anton_Chekhov_1889.jpg" alt="契诃夫">
+      <!-- duplicate -->
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Pushkin_self-portrait_1820s.jpg/330px-Pushkin_self-portrait_1820s.jpg" alt="普希金">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/%E5%A5%A5%C2%B7%E5%B7%B4%E5%B0%94%E6%89%8E%E5%85%8B.png/330px-%E5%A5%A5%C2%B7%E5%B7%B4%E5%B0%94%E6%89%8E%E5%85%8B.png" alt="巴尔扎克">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Henrik_Ibsen_av_Eilif_Peterssen_1895.jpg/330px-Henrik_Ibsen_av_Eilif_Peterssen_1895.jpg" alt="易卜生">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/George_Charles_Beresford_-_Virginia_Woolf_in_1902_-_Restoration.jpg/330px-George_Charles_Beresford_-_Virginia_Woolf_in_1902_-_Restoration.jpg" alt="伍尔夫">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Franz_Kafka%2C_1923.jpg/330px-Franz_Kafka%2C_1923.jpg" alt="卡夫卡">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Anton_Chekhov_1889.jpg/330px-Anton_Chekhov_1889.jpg" alt="契诃夫">
+    </div>
+
+    <!-- 列7 -->
+    <div class="wf-col">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Bargello_-_Kapelle_Fresko_2a.jpg/330px-Bargello_-_Kapelle_Fresko_2a.jpg" alt="但丁">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Goethe_%28Stieler_1828%29.jpg/330px-Goethe_%28Stieler_1828%29.jpg" alt="歌德">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Cervantes_J%C3%A1uregui.jpg/330px-Cervantes_J%C3%A1uregui.jpg" alt="塞万提斯">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Victor_Hugo_by_%C3%89tienne_Carjat_1876_-_full.jpg/330px-Victor_Hugo_by_%C3%89tienne_Carjat_1876_-_full.jpg" alt="雨果">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Gustave_Flaubert.jpg/330px-Gustave_Flaubert.jpg" alt="福楼拜">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Byron_1813_by_Phillips.jpg/330px-Byron_1813_by_Phillips.jpg" alt="拜伦">
+      <!-- duplicate -->
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Bargello_-_Kapelle_Fresko_2a.jpg/330px-Bargello_-_Kapelle_Fresko_2a.jpg" alt="但丁">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Goethe_%28Stieler_1828%29.jpg/330px-Goethe_%28Stieler_1828%29.jpg" alt="歌德">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Cervantes_J%C3%A1uregui.jpg/330px-Cervantes_J%C3%A1uregui.jpg" alt="塞万提斯">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Victor_Hugo_by_%C3%89tienne_Carjat_1876_-_full.jpg/330px-Victor_Hugo_by_%C3%89tienne_Carjat_1876_-_full.jpg" alt="雨果">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Gustave_Flaubert.jpg/330px-Gustave_Flaubert.jpg" alt="福楼拜">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Byron_1813_by_Phillips.jpg/330px-Byron_1813_by_Phillips.jpg" alt="拜伦">
+    </div>
+
+    <!-- 列8 -->
+    <div class="wf-col">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Plato_Silanion_Musei_Capitolini_MC1377.png/330px-Plato_Silanion_Musei_Capitolini_MC1377.png" alt="柏拉图">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Aristotle_Altemps_Inv8575.jpg/330px-Aristotle_Altemps_Inv8575.jpg" alt="亚里士多德">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Atelier_de_Nicolas_de_Largilli%C3%A8re%2C_portrait_de_Voltaire%2C_d%C3%A9tail_%28mus%C3%A9e_Carnavalet%29_-002.jpg/330px-Atelier_de_Nicolas_de_Largilli%C3%A8re%2C_portrait_de_Voltaire%2C_d%C3%A9tail_%28mus%C3%A9e_Carnavalet%29_-002.jpg" alt="伏尔泰">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Jean-Jacques_Rousseau_%28painted_portrait%29.jpg/330px-Jean-Jacques_Rousseau_%28painted_portrait%29.jpg" alt="卢梭">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Revolutionary_Joyce_Better_Contrast.jpg/330px-Revolutionary_Joyce_Better_Contrast.jpg" alt="乔伊斯">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Portrait_de_Jean_Racine_d%27apr%C3%A8s_Jean-Baptiste_Santerre.jpg/330px-Portrait_de_Jean_Racine_d%27apr%C3%A8s_Jean-Baptiste_Santerre.jpg" alt="拉辛">
+      <!-- duplicate -->
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Plato_Silanion_Musei_Capitolini_MC1377.png/330px-Plato_Silanion_Musei_Capitolini_MC1377.png" alt="柏拉图">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Aristotle_Altemps_Inv8575.jpg/330px-Aristotle_Altemps_Inv8575.jpg" alt="亚里士多德">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Atelier_de_Nicolas_de_Largilli%C3%A8re%2C_portrait_de_Voltaire%2C_d%C3%A9tail_%28mus%C3%A9e_Carnavalet%29_-002.jpg/330px-Atelier_de_Nicolas_de_Largilli%C3%A8re%2C_portrait_de_Voltaire%2C_d%C3%A9tail_%28mus%C3%A9e_Carnavalet%29_-002.jpg" alt="伏尔泰">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Jean-Jacques_Rousseau_%28painted_portrait%29.jpg/330px-Jean-Jacques_Rousseau_%28painted_portrait%29.jpg" alt="卢梭">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Revolutionary_Joyce_Better_Contrast.jpg/330px-Revolutionary_Joyce_Better_Contrast.jpg" alt="乔伊斯">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Portrait_de_Jean_Racine_d%27apr%C3%A8s_Jean-Baptiste_Santerre.jpg/330px-Portrait_de_Jean_Racine_d%27apr%C3%A8s_Jean-Baptiste_Santerre.jpg" alt="拉辛">
+    </div>
+
   </div><!-- .wf-grid -->
 
   <div class="wf-veil"></div>
 
   <div class="wf-center">
-    <div class="wf-label">Green Light Lit · 绿光文学考研</div>
-    <h1 class="wf-title">人大文学考研<br>真题地图</h1>
-    <p class="wf-sub">以文学史为经，真题为纬</p>
-    <button id="enter-btn">进入 →</button>
+
+    <!-- Logo -->
+    <div class="gl-logo">
+      <svg class="gl-logo-icon" width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+        <!-- outer glow rings -->
+        <circle cx="20" cy="20" r="18" fill="none" stroke="#4ade80" stroke-width=".6" opacity=".15"/>
+        <circle cx="20" cy="20" r="13" fill="none" stroke="#4ade80" stroke-width=".8" opacity=".25"/>
+        <!-- inner ring -->
+        <circle cx="20" cy="20" r="8" fill="none" stroke="#4ade80" stroke-width="1" opacity=".5"/>
+        <!-- core dot -->
+        <circle cx="20" cy="20" r="4" fill="#4ade80"/>
+        <!-- beam upward -->
+        <line x1="20" y1="16" x2="20" y2="2" stroke="#4ade80" stroke-width=".8" opacity=".4"
+              stroke-linecap="round"/>
+        <!-- serif serifs as tick marks -->
+        <line x1="17" y1="6" x2="23" y2="6" stroke="#4ade80" stroke-width=".6" opacity=".3"/>
+      </svg>
+      <div>
+        <div class="gl-logo-text-en">Green Light Lit</div>
+      </div>
+    </div>
+
+    <!-- Gatsby quote -->
+    <div class="gatsby-quote">
+      <p class="gatsby-en">
+        So we beat on, boats against the current,<br>
+        borne back ceaselessly into the past.
+      </p>
+      <p class="gatsby-source">— F. Scott Fitzgerald · The Great Gatsby</p>
+    </div>
+
+    <button id="enter-btn">Enter →</button>
   </div>
 
-  <div class="wf-hint">点击任意位置进入</div>
+  <div class="wf-hint">click anywhere to enter</div>
 </div><!-- #intro-overlay -->
 
 <div class="tricolor"></div>
@@ -621,8 +754,8 @@ body::before {
     <div class="quick-links">
       <a href="liang-xi-chuantong.html">古典希腊</a>
       <a href="liang-xi-chuantong.html#renaissance">文艺复兴</a>
-      <a href="liang-xi-chuantong.html#romanticism">浪漫主义</a>
-      <a href="liang-xi-chuantong.html#realism">现实主义</a>
+      <a href="langman-zhuyi.html">浪漫主义</a>
+      <a href="xianshi-zhuyi.html">现实主义</a>
       <a href="liang-xi-chuantong.html#modernism">现代主义</a>
       <a href="zhenti.html">626真题汇总</a>
     </div>
@@ -665,5 +798,6 @@ function toggleTheme(){
   }
 }
 </script>
+<script src="notes.js"></script>
 </body>
 </html>

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" width="200" height="80">
+  <defs>
+    <radialGradient id="glGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#4ade80" stop-opacity="1"/>
+      <stop offset="40%"  stop-color="#22c55e" stop-opacity=".6"/>
+      <stop offset="100%" stop-color="#4ade80" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background glow halo -->
+  <ellipse cx="34" cy="40" rx="22" ry="22" fill="url(#glGlow)" opacity=".18"/>
+
+  <!-- Outer rings -->
+  <circle cx="34" cy="40" r="19" fill="none" stroke="#4ade80" stroke-width=".7" opacity=".18"/>
+  <circle cx="34" cy="40" r="14" fill="none" stroke="#4ade80" stroke-width=".8" opacity=".28"/>
+  <circle cx="34" cy="40" r="9"  fill="none" stroke="#4ade80" stroke-width="1"  opacity=".45"/>
+
+  <!-- Core -->
+  <circle cx="34" cy="40" r="4.5" fill="#4ade80" filter="url(#glow)"/>
+
+  <!-- Beam -->
+  <line x1="34" y1="30.5" x2="34" y2="10" stroke="#4ade80" stroke-width="1" opacity=".38"
+        stroke-linecap="round"/>
+  <line x1="30" y1="14" x2="38" y2="14" stroke="#4ade80" stroke-width=".7" opacity=".28"/>
+
+  <!-- Chinese text: 绿光 -->
+  <text x="64" y="36"
+        font-family="'Noto Serif SC', 'Source Han Serif SC', serif"
+        font-size="22" font-weight="600"
+        fill="#f0f0f0" letter-spacing="4">绿光</text>
+
+  <!-- English text -->
+  <text x="65" y="54"
+        font-family="'Cormorant Garamond', Georgia, serif"
+        font-style="italic" font-size="10"
+        fill="#6a7a9a" letter-spacing="4">Green Light Lit</text>
+
+  <!-- Thin divider line -->
+  <line x1="64" y1="40" x2="185" y2="40" stroke="rgba(200,220,255,0.12)" stroke-width=".5"/>
+</svg>

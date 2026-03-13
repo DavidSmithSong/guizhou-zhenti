@@ -794,3 +794,189 @@ body::before {
 @media (max-width: 500px) {
   .video-section { margin: 0 1rem 2rem; }
 }
+
+
+/* ═══════════════════════════════════════════════
+   互动功能样式：思维导图 + 名词解释闪卡
+   ═══════════════════════════════════════════════ */
+
+/* ── 导图触发按钮 ── */
+.mm-trigger-btn {
+  margin-left: .6rem;
+}
+
+/* ── 思维导图模态框 ── */
+#mm-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.72);
+  z-index: 20000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem;
+  backdrop-filter: blur(4px);
+}
+#mm-modal {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  width: 100%; max-width: 960px;
+  max-height: 90vh;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+#mm-toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .8rem 1.2rem;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+#mm-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--muted);
+  font-size: .9rem;
+  letter-spacing: .1em;
+}
+#mm-close {
+  background: none; border: none;
+  color: var(--muted); cursor: pointer;
+  font-size: .85rem; padding: .3rem .6rem;
+  border-radius: 3px;
+  transition: color .2s, background .2s;
+}
+#mm-close:hover { color: var(--text); background: var(--surface2); }
+#mm-canvas {
+  overflow: auto; padding: 1.5rem;
+  flex: 1;
+}
+
+/* ── SVG 思维导图元素 ── */
+.mm-line {
+  stroke: var(--line);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+}
+.mm-line-branch { stroke: var(--gold-dim); opacity: .7; }
+.mm-line-leaf   { stroke: var(--muted); opacity: .5; }
+
+.mm-node rect {
+  transition: opacity .15s;
+}
+.mm-root rect {
+  fill: var(--gold-dim); opacity: .85;
+}
+.mm-branch rect {
+  fill: var(--surface2);
+  stroke: var(--line); stroke-width: 1;
+}
+.mm-leaf rect {
+  fill: var(--surface);
+  stroke: var(--line); stroke-width: 1;
+}
+.mm-node:hover rect { opacity: .8; }
+
+.mm-node text {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 12px;
+  fill: var(--text);
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+}
+.mm-root text { fill: #fff; font-weight: 600; font-size: 11px; }
+.mm-branch text { font-size: 12px; }
+.mm-leaf text { font-size: 11px; fill: var(--muted); }
+
+[data-theme="light"] .mm-root rect { fill: var(--gold-dim); }
+[data-theme="light"] .mm-node text { fill: var(--text); }
+[data-theme="light"] .mm-root text { fill: #fff; }
+
+/* ── 名词解释闪卡 ── */
+.fc-deck {
+  margin: 1.4rem 0 2rem;
+}
+.fc-progress {
+  display: flex; align-items: center; gap: 1rem;
+  font-size: .78rem; color: var(--muted);
+  margin-bottom: .8rem;
+  flex-wrap: wrap;
+}
+.fc-count { font-weight: 600; color: var(--text); }
+.fc-score b { color: #5ba87a; }
+
+.fc-card-wrap {
+  perspective: 1000px;
+  height: 180px;
+  margin-bottom: .8rem;
+  cursor: pointer;
+}
+.fc-card {
+  position: relative;
+  width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transition: transform .45s cubic-bezier(.4,0,.2,1);
+}
+.fc-card.fc-flipped { transform: rotateY(180deg); }
+
+.fc-face {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface2);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 1.2rem 2rem;
+  text-align: center;
+  transition: background .25s, border-color .25s;
+}
+.fc-face:hover { background: var(--surface); }
+.fc-back {
+  transform: rotateY(180deg);
+  background: var(--surface);
+}
+
+.fc-label {
+  font-size: .7rem; letter-spacing: .12em;
+  color: var(--muted); text-transform: uppercase;
+  margin-bottom: .5rem;
+  font-family: 'Cormorant Garamond', serif;
+}
+.fc-term {
+  font-size: 1.35rem; font-weight: 600;
+  color: var(--gold);
+  font-family: 'Noto Serif SC', serif;
+}
+.fc-def {
+  font-size: .88rem; line-height: 1.7;
+  color: var(--text);
+}
+
+.fc-btns {
+  display: flex; gap: .6rem; justify-content: center;
+}
+.fc-btn {
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-family: 'Noto Serif SC', serif;
+  font-size: .82rem;
+  padding: .45rem 1.1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.fc-btn:hover { background: var(--surface); }
+.fc-know {
+  background: rgba(91,168,122,.15);
+  border-color: rgba(91,168,122,.4);
+  color: #5ba87a;
+}
+.fc-know:hover { background: rgba(91,168,122,.25); }
+
+@media (max-width: 600px) {
+  .fc-card-wrap { height: 200px; }
+  .fc-term { font-size: 1.1rem; }
+  .fc-def  { font-size: .82rem; }
+  .fc-btn  { font-size: .76rem; padding: .4rem .7rem; }
+}
